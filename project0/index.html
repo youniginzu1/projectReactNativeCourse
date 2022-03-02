@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TODO App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="./styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <input type="text" placeholder="Add a new task" class="newTask">
+      <div class="header">
+        <div class="status">
+          <h4 onclick="getAllTasks()" class="allTask active">All</h4>
+          <h4 onclick="getAllPending()" class="pedTask">Pending</h4>
+          <h4 onclick="getAllCompleted()" class="comTask">Completed</h4>
+        </div>
+        <button onClick="clearAllTasks()">Clear All</button>
+      </div>
+      <ul class="todoList"></ul>
+    </div>
+    <script src="./script.js"></script>
+  </body>
+</html>
