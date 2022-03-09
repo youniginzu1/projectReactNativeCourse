@@ -3,7 +3,8 @@ const todoList = document.querySelector(".todoList");
 const allTask = document.querySelector(".allTask");
 const pedTask = document.querySelector(".pedTask");
 const comTask = document.querySelector(".comTask");
-
+const allTaskNum = document.querySelector("#allTask");
+const pedTaskNum = document.querySelector("#pedTask");
 
 newTask.addEventListener("keyup", (e) => {
   if (e.keyCode === 13 && newTask.value !== "") {
@@ -14,23 +15,34 @@ newTask.addEventListener("keyup", (e) => {
         <i class="fa-solid fa-trash-can"></i>
       </span>`;
     todoList.appendChild(li);
+    allTaskNum.textContent = parseInt(allTaskNum.textContent) + 1;
+    pedTaskNum.textContent = parseInt(pedTaskNum.textContent) + 1;
     newTask.value = "";
   }
-})
+});
 
 function clearAllTasks() {
-  while(todoList.lastElementChild) {
+  while (todoList.lastElementChild) {
     todoList.removeChild(todoList.lastElementChild);
   }
+  allTaskNum.textContent = 0;
+  pedTaskNum.textContent = 0;
 }
 
 function toggleCheck(self) {
   const taskDetail = self.nextElementSibling;
   taskDetail.classList.toggle("stringDelete");
+  if (taskDetail.classList.contains("stringDelete")) {
+    pedTaskNum.textContent = parseInt(pedTaskNum.textContent) - 1;
+  } else {
+    pedTaskNum.textContent = parseInt(pedTaskNum.textContent) + 1;
+  }
 }
 
 function deleteTask(self) {
   const li = self.parentElement;
+  allTaskNum.textContent = parseInt(allTaskNum.textContent) - 1;
+  pedTaskNum.textContent = parseInt(pedTaskNum.textContent) - 1;
   todoList.removeChild(li);
 }
 

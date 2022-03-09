@@ -99,3 +99,9 @@ body {
   border-radius: 50%;
   top: -8px;
 }
+
+#allTask, #pedTask {
+  cursor: default;
+  color: #333;
+  padding: 0px 6px;
+}

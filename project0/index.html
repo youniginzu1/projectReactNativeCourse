@@ -12,8 +12,8 @@
       <input type="text" placeholder="Add a new task" class="newTask">
       <div class="header">
         <div class="status">
-          <h4 onclick="getAllTasks()" class="allTask active">All</h4>
-          <h4 onclick="getAllPending()" class="pedTask">Pending</h4>
+          <h4 onclick="getAllTasks()" class="allTask active">All<span id="allTask">0</span></h4>
+          <h4 onclick="getAllPending()" class="pedTask">Pending<span id="pedTask">0</span></h4>
           <h4 onclick="getAllCompleted()" class="comTask">Completed</h4>
         </div>
         <button onClick="clearAllTasks()">Clear All</button>
