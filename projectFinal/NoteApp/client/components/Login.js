@@ -1,4 +1,4 @@
-import { View, TextInput, Button, StyleSheet, Text } from 'react-native'
+import { View, TextInput, Button, StyleSheet, Text, Pressable, KeyboardAvoidingView } from 'react-native'
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
@@ -22,7 +22,8 @@ function Login({ loginUser, logErr }) {
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} behavior={"padding"}>
+      <Text style={styles.header}>MyNote</Text>
       <Text style={styles.errText}>{logErr}</Text>
       <TextInput
         style={styles.input}
@@ -39,8 +40,10 @@ function Login({ loginUser, logErr }) {
         autoCapitalize='none'
         secureTextEntry
       />
-      <Button title='Login' onPress={login}/>
-    </View>
+      <Pressable onPress={login} style={styles.button}>
+        <Text style={styles.text}>Login</Text>
+      </Pressable>
+    </KeyboardAvoidingView>
   )
 }
 
@@ -54,8 +57,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1, 
     justifyContent: 'center', 
-    paddingLeft: 20,
-    paddingRight: 20
+    paddingHorizontal: 20,
+    backgroundColor: '#f5f4f1'
+  },
+  header: {
+    color: "#d9ae21",
+    fontSize: 45,
+    textAlign: "center",
+    paddingBottom: 40
   },
   input: {
     padding: 8,
@@ -66,7 +75,22 @@ const styles = StyleSheet.create({
   },
   errText: {
     color: 'red'
-  }
+  },
+  button: {
+    marginTop: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    backgroundColor: '#d9ae21',
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
+  },
 })
 
 const mapStateToProps = state => ({

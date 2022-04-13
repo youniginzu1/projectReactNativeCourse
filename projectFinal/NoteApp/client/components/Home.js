@@ -1,6 +1,8 @@
 import React from 'react'
-import { Button, View, Text, StyleSheet, Keyboard } from 'react-native'
+import { Keyboard, Pressable, Text } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import Icons from 'react-native-vector-icons/Octicons'
+import AntIcons from 'react-native-vector-icons/AntDesign'
 
 import FolderList from './FolderList'
 import NoteList from './NoteList'
@@ -22,28 +24,69 @@ function Home() {
       <Stack.Screen 
         name='NoteList'
         component={NoteList}
-        options={{
+        options={({navigation}) => ({
           title: '',
           headerStyle: {
-            backgroundColor: '#fff',
+            backgroundColor: '#f5f4f1',
           },
-          headerShadowVisible: false
-        }}
+          headerShadowVisible: false,
+          headerLeft: () => (
+            <Pressable
+              onPress={() => {
+                navigation.goBack()
+              }}
+              >
+              <AntIcons
+                name='left'
+                size={25}
+                color='#d9ae21'
+              />
+            </Pressable>
+          ),
+        })}
       />
       <Stack.Screen 
         name='NoteDetails'
         component={NoteDetails}
-        options={{
-          headerRight: () => (
-            <Button title='Xong' onPress={() => Keyboard.dismiss()} />
-          ),
-          title: '',
-          headerStyle: {
-            backgroundColor: '#fff',
-          },
-          headerShadowVisible: false,
-          headerBackTitle: 'abcc'
-        }}
+        options={({navigation, route}) => (
+          {
+            headerRight: () => (
+              <Pressable
+                onPress={() => {
+                  Keyboard.dismiss()
+                }}
+                >
+                <Icons
+                  name='check'
+                  size={25}
+                  color='#d9ae21'
+                />
+              </Pressable>
+            ),
+            title: '',
+            headerStyle: {
+              backgroundColor: '#f5f4f1',
+            },
+            headerShadowVisible: false,
+            headerLeft: () => (
+              <Pressable
+                style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}
+                onPress={() => {
+                  navigation.goBack()
+                }}
+                >
+                <AntIcons
+                  name='left'
+                  size={25}
+                  color='#d9ae21'
+                />
+                <Text style={{color: "#d9ae21", fontSize: 18}}>
+                  {route.params.folderName}
+                </Text>
+              </Pressable>
+            ),
+          }
+        )}
       />
     </Stack.Navigator>
   )

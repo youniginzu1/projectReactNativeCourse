@@ -16,12 +16,12 @@ const userReducer = (state = {}, action) => {
   }
 }
 
-const folderReducer = (state = [], action) => {
+const folderReducer = (state = [{folderId: 0, folderName: "Notes"}], action) => {
   switch (action.type) {
     case ADD_FOLDER:
-      return [...state, {folderId: state.length, folderName: action.payload}]
+      return [...state, action.payload]
     case DELETE_FOLDER:
-      return state.filter(s => s.folderId !== action.payload)
+      return state.filter(folder => folder.folderId !== action.payload)
     default:
       return state
   }
@@ -40,7 +40,7 @@ const noteReducer = (state = [], action) => {
     case ADD_NOTE:
       return [...state, action.payload]
     case DELETE_NOTE:
-      if (!action.payload.noteId) {
+      if (action.payload.noteId === null) {
         return state.filter(note => (
           note.folderId !== action.payload.folderId
         ))

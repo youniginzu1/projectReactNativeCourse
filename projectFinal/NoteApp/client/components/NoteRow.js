@@ -1,19 +1,19 @@
 import React from "react"
 import {TouchableHighlight, Text, StyleSheet} from 'react-native'
 
-function NoteRow({ item, onNoteSelect}) {
+function NoteRow({ item, onNoteSelect, folderName}) {
 
   const getNoteTitle = (noteContent) => {
-    if (noteContent.length < 30) {
-      return noteContent
-    } else {
-      return noteContent.slice(0, 30) + '...'
+    const regex = /(<\w+>)+([-/:;()&@"\.,?!'₫1234567890aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ\s]+)/
+    const match = regex.exec(noteContent);
+    if (match !== null) {
+      return match[match.length - 1]
     }
   }
 
   return (
     <TouchableHighlight 
-      onPress={() => onNoteSelect(item)} 
+      onPress={() => onNoteSelect(item, folderName)} 
       style={[styles.container]}
       underlayColor='#f0e6c5'
     >
@@ -24,11 +24,11 @@ function NoteRow({ item, onNoteSelect}) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: '#f5f4f1',
     paddingHorizontal: 15,
-    paddingVertical: 20,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
     borderBottomColor: '#ddd',
-    borderBottomWidth: 1
   },
   row: {
     fontSize: 18,

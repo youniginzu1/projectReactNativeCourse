@@ -42,7 +42,9 @@ function toggleCheck(self) {
 function deleteTask(self) {
   const li = self.parentElement;
   allTaskNum.textContent = parseInt(allTaskNum.textContent) - 1;
-  pedTaskNum.textContent = parseInt(pedTaskNum.textContent) - 1;
+  if (!li.firstChild.nextElementSibling.classList.contains("stringDelete")) {
+    pedTaskNum.textContent = parseInt(pedTaskNum.textContent) - 1;
+  }
   todoList.removeChild(li);
 }
 

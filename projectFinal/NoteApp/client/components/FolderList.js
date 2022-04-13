@@ -1,12 +1,12 @@
 import React, { useLayoutEffect } from 'react'
-import { Button, View, Text, StyleSheet, FlatList, Modal, Pressable, TextInput } from 'react-native'
+import { Button, View, Text, StyleSheet, Modal, TextInput, Pressable } from 'react-native'
 import { connect } from 'react-redux'
-import { SwipeListView } from 'react-native-swipe-list-view'
+import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view'
 
 import FolderRow from './FolderRow'
 import { addFolder, deleteFolder, deleteNote } from '../redux/actions'
 
-function FolderList({ navigation, folders, addFolder, deleteFolder }) {
+function FolderList({ navigation, folders, addFolder, deleteFolder, deleteNote }) {
   const [name, setName] = React.useState('')
   const [modalVisible, setModalVisible] = React.useState(false)
 
@@ -15,7 +15,11 @@ function FolderList({ navigation, folders, addFolder, deleteFolder }) {
   }
 
   const handleSubmit = () => {
-    addFolder(name)
+    let folderId = folders.length
+    if (folders.length !== 0) {
+      folderId = folders[folders.length - 1].folderId + 1
+    }
+    addFolder({folderId: folderId, folderName: name})
     setModalVisible(!modalVisible)
     setName('')
   }
@@ -31,15 +35,23 @@ function FolderList({ navigation, folders, addFolder, deleteFolder }) {
     })
   }
 
-  const renderItem = (data) => <FolderRow item={data.item} onFolderSelect={handleFolderSelect} />
-
-  const renderHiddenItem = (data) => (
-    <View style={{alignItems: 'flex-end'}}>
-      <Button title='Xóa' onPress={() => {
-        deleteNote(null, data.item.folderId)
-        deleteFolder(data.item.folderId)
-      }} />
-    </View>
+  const renderItem = (data, rowMap) => (
+    <SwipeRow
+      rightOpenValue={-80}
+      leftOpenValue={0}
+      disableRightSwipe={true}
+      disableLeftSwipe={data.item.folderId === 0}
+    >
+      <Pressable
+        style={styles.button} 
+        onPress={() => {
+          deleteNote(null, data.item.folderId)
+          deleteFolder(data.item.folderId)
+      }}>
+        <Text style={styles.text}>Xóa</Text>
+      </Pressable>
+      <FolderRow item={data.item} onFolderSelect={handleFolderSelect} />
+    </SwipeRow>
   )
 
   const keyExtractor = (item) => item.folderId
@@ -49,12 +61,8 @@ function FolderList({ navigation, folders, addFolder, deleteFolder }) {
       <View>
         <Text style={styles.header}>Thư mục</Text>
         <SwipeListView 
-          style={styles.listContainer}
           data={folders}
           renderItem={renderItem}
-          renderHiddenItem={renderHiddenItem}
-          rightOpenValue={-75}
-          leftOpenValue={0}
           keyExtractor={keyExtractor}
         />
       </View>
@@ -81,15 +89,15 @@ function FolderList({ navigation, folders, addFolder, deleteFolder }) {
                 autoFocus={true}
               />
               <View style={styles.inputContainer}>
-                <Button title='Hủy' onPress={handleCancel} />
-                <Button title='Lưu' onPress={handleSubmit} disabled={name===''} />
+                <Button title='Hủy' color="#d9ae21" onPress={handleCancel} />
+                <Button title='Lưu' color="#d9ae21" onPress={handleSubmit} disabled={name===''} />
               </View>
             </View>
           </View>
         </Modal>
       </View>
       <View style={styles.btnAdd}>
-        <Button title='Thư mục mới' onPress={() => setModalVisible(true)}/>
+        <Button title='Thư mục mới' color="#d9ae21" onPress={() => setModalVisible(true)}/>
       </View>
     </View>
   )
@@ -99,13 +107,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: 80,
-    backgroundColor: '#fff'
-  },
-  listContainer: {
-    borderTopColor: '#ddd', 
-    borderTopWidth: 1, 
-    borderBottomColor: '#ddd', 
-    borderBottomWidth: 1
+    backgroundColor: '#f5f4f1'
   },
   header: {
     fontSize: 30, 
@@ -156,11 +158,25 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     right: 0,
-  }
+  },
+  button: {
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    backgroundColor: 'red',
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
+  },
 })
 
 const mapStateToProps = state => ({
   folders: state.folders
 })
 
-export default connect(mapStateToProps, {addFolder, deleteFolder})(FolderList)
+export default connect(mapStateToProps, {addFolder, deleteFolder, deleteNote})(FolderList)
